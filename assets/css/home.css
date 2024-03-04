@@ -1,0 +1,262 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'poppins', 'sans-serif';
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #8ef1f8; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+  
+.nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+}
+  
+.logo {
+    height: 50px; 
+    width: auto;
+    margin-right: 20px;
+}
+  
+.navbar a {
+    text-decoration: none;
+    margin-left: 20px;
+    color: #fff; 
+    font-size: 25px;
+}
+  
+.navbar a:hover {
+    color: #007bff; 
+}
+  
+.hero-img {
+    background-image: url('/images/herounsplash.jpg'); 
+    height: 100vh; 
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover; 
+    position: relative;
+}
+  
+.hero-txt {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white; 
+}
+  
+.hero-txt h1 {
+    font-size: 50px; 
+    margin-bottom: 20px;
+}
+  
+.hero-txt p {
+    font-size: 20px; 
+    margin-bottom: 40px;
+}
+  
+.hero-btn {
+    text-decoration: none;
+    color: white; 
+    background-color: #007bff; 
+    padding: 12px 28px;
+    border-radius: 8px;
+}
+  
+.hero-btn:hover {
+    background-color: #0056b3; 
+}
+
+.content {
+    display: flex;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 20px; 
+    padding: 20px;
+}
+  
+.feature {
+    background: #f9f9f9; 
+    padding: 20px;
+    text-align: center; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+  
+.feature img {
+    width: 200px; 
+    height: 200px;
+    object-fit: cover;
+    margin-bottom: 0 auto 20px; 
+}
+  
+.feature h3 {
+    margin-bottom: 15px; 
+    color: #333; 
+}
+  
+.feature p {
+    font-size: 14px;
+    color: #666; 
+}
+
+.ftmeals {
+    display: flex;
+    justify-content: space-around; 
+    padding: 20px;
+}
+  
+.card {
+    width: 300px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+  
+.card img {
+    width: 100%; 
+    height: 200px;
+    object-fit: cover;
+}
+  
+.card h3 {
+    margin: 10px 0;
+    flex-shrink: 0;
+}
+  
+.card p {
+    padding: 0 20px;
+    font-size: 14px;
+    flex-grow: 1;
+}
+
+.card .price {
+    font-weight: bold;
+    color: #4CAF50;
+    margin-top: 10px;
+    flex-shrink: 0;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+.footcontent {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.footermenu, .socmed {
+    flex: 1;
+    min-width: 250px;
+}
+
+.footermenu a, .socmed a {
+    display: block;
+    text-decoration: none;
+    color: #fff;
+    margin: 20px 0;
+}
+
+.footermenu a:hove, .socmed a:hover {
+    color: #007bff;
+}
+
+.cpright {
+    font-size: 14px;
+    margin: 10px 0;
+}
+
+.signupctn, .loginctn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+.supcontainer {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 60px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 600px; 
+}
+
+h1 {
+    font-size: 36px; 
+    margin-bottom: 40px; 
+}
+
+.supentry {
+    margin-bottom: 20px; 
+}
+
+input {
+    width: calc(100% - 16px); 
+    padding: 16px; 
+}
+
+.btncontainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.signupbtn {
+    font-size: 20px; 
+    padding: 16px 32px; 
+}
+
+.login-link, .signuplink {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.login-link a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.signuplink a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.otmctn {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.meal-kits-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+section > h2 {
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .meal-kits-grid {
+        grid-template-columns: 1fr;
+    }
+}

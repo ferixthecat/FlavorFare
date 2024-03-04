@@ -1,0 +1,34 @@
+<div class="hero-img">
+    <div class="hero-txt">
+        <h1>Direct Flavor at Home!</h1>
+        <p>Discover new flavors weekly directly delivered for home cooking.</p>
+        <a href="/on-the-menu" class="hero-btn">Explore the Menu</a>
+    </div>
+</div>
+<div class="content">
+    <div class="feature">
+        <img src="/images/recipe.jpg" alt="recipe">
+        <h3>New and original recipes</h3>
+        <p>Our team creates unique menus and products for breakfast, lunch, and dinner, every week.</p>
+    </div>
+    <div class="feature">
+        <img src="/images/ingred.jpg" alt="exact ingredients">
+        <h3>Get only what you need</h3>
+        <p>Pre-measured, farm-fresh ingredients delivered to your door help you reduce food waste and save money.</p>
+    </div>
+    <div class="feature">
+        <img src="/images/mealprep.jpg" alt="meal prep">
+        <h3>Effortless meal planning</h3>
+        <p>Skip trips to the store and the difficult decisions on what to make with just a few clicks.</p>
+    </div>
+    <div class="feature">
+        <img src="/images/mealbox.jpg" alt="meal box">
+        <h3>No delivery fee</h3>
+        <p>Ingredients are packaged in temperature-conditioned boxes, so food stays fresh, with no delivery fee.</p>
+    </div>
+</div>
+<div class="ftmeals">
+    <% featuredMealKits.forEach(mealkit => { %>
+        <%- include("../partials/mealkit", mealkit) %>
+    <% }); %>
+</div>
