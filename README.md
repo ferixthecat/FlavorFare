@@ -16,7 +16,7 @@ A Canadian meal delivery website that creates recipes and delivers ingredients s
 The website is built using JavaScript (Node.js, Express.js, EJS), HTML, CSS, MongoDB. Hosted using Cyclic. 
 
 # Learning
-Implementation of the website spanning over six assessments as a final project for WEB322, learning about web development topics. 
-• MVC 
-• database implementation (MongoDB)
+Implementation of the website spanning over six assessments as a final project for WEB322, learning about web development topics.  
+• MVC   
+• database implementation (MongoDB)  
 • email delivery using SendGrid API 
