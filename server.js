@@ -13,10 +13,16 @@
 const path = require("path");
 const express = require("express");
 const expressLayouts = require('express-ejs-layouts');
+const bodyParser = require("body-parser");
 const app = express();
+require('dotenv').config();
+
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // Make assets folder public
 app.use(express.static(path.join(__dirname, "/assets")));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Set up EJS
 app.set("view engine", "ejs");
@@ -43,12 +49,73 @@ app.get("/on-the-menu", (req, res) => {
 });
 
 app.get("/sign-up", (req, res) => {
-    res.render("layouts/sign-up", {title: "Sign-Up"});
+    res.render("layouts/sign-up", {title: "Sign-Up", errors: {}, formData: {}});
 });
 
+app.post("/sign-up", (req, res) => {
+    const { firstName, lastName, email, password } = req.body;
+    let errors = {};
+
+    if (!firstName || firstName.trim() === '') errors.firstName = 'Please enter your first name';
+    if (!lastName || lastName.trim() === '') errors.lastName = 'Please enter your last name';
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || email.trim() === '') {
+        errors.email = 'Please enter your email address';
+    } else if (!emailRegex.test(email)) {
+        errors.email = 'Please enter a valid email address';
+    }
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,12}$/;
+    if (!password || password.trim() === '') {
+        errors.password = 'Please enter a password';
+    } else if (!passwordRegex.test(password)) {
+        errors.password = 'Password must be 8-12 characters and include at least one lowercase letter, one number, and one symbol';
+    }
+
+    if (Object.keys(errors).length > 0) {
+        res.render("layouts/sign-up", {title: "Sign-Up", errors, formData: { firstName, lastName, email, password } });
+    } else {
+        const msg = {
+            to: email,
+            from: 'flavorfaredirect@hotmail.com',
+            subject: 'Welcome to FlavorFare Direct',
+            text: `Hello ${firstName} ${lastName}, Welcome to FlavorFare Direct! We're thrilled to have you onboard as a member. - Felix Tse, FlavorFare Direct`,
+            html: `<strong>Hello ${firstName} ${lastName},</strong><br>Welcome to FlavorFare Direct! We're thrilled to have you onboard as a member.<br>- Felix Tse, FlavorFare Direct`,
+        }
+
+        sgMail
+            .send(msg)
+            .then(() => {
+                console.log('Welcome email sent');
+            })
+            .catch((error) => {
+                console.error('Error sending welcome email: ', error);
+            });
+        res.render("layouts/welcome", {title: "Welcome"});
+    }
+})
+
 app.get("/log-in", (req, res) => {
-    res.render("layouts/log-in", {title: "Log-In"});
+    res.render("layouts/log-in", {title: "Log-In", errors: {}, formData: {} });
 });
+
+app.post("/log-in", (req, res) => {
+    const { email, password } = req.body;
+    let errors = {};
+
+    if (!email || email.trim() === '') {
+        errors.email = 'Please enter a valid email address';
+    }
+
+    if (!password || password.trim() === '') {
+        errors.password = 'Please enter your password';
+    }
+
+    if (Object.keys(errors).length > 0) {
+        res.render("layouts/log-in", { title: "Log-In", errors, formData: { email, password } });
+    }
+})
 
 app.get("/welcome", (req, res) => {
     res.render("layouts/welcome", {title: "Welcome"});

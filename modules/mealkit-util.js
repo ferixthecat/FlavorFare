@@ -45,8 +45,8 @@ let mealkits = [
     },
     {
         "title": "Eggs Benny",
-        "includes": "",
-        "description": "",
+        "includes": "Avocado, Salad with Vinaigrette, English Muffin",
+        "description": "Eggs Benny with Avocado, Salad with Vinaigrette",
         "category": "Breakfast",
         "price": 14.99,
         "cookingTime": 15,
@@ -56,8 +56,8 @@ let mealkits = [
     },
     {
         "title": "Breakfast Burritos",
-        "includes": "",
-        "description": "",
+        "includes": "eggs, sausage, bacon, green onion, chives, hot sauce",
+        "description": "Breakfast burritos with eggs, sausage, bacon, green onions, chives, hot sauce, Ketchup",
         "category": "Breakfast",
         "price": 13.99,
         "cookingTime": 15,

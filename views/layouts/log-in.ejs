@@ -4,11 +4,17 @@
         <form method="post" class="incontainer" action="/log-in">
             <div class="supentry">
                 <label for="email" class="label">Email</label>
-                <input type="text" id="email" name="email" value>
+                <input type="text" id="email" name="email" value="<%= formData ? formData.email : '' %>">
+                <% if (errors && errors.email) { %>
+                    <div class="error" style="color: red;"><%= errors.email %></div>
+                <% } %>
             </div>
             <div class="supentry">
                 <label for="password" class="label">Password</label>
-                <input type="password" id="password" name="password" value>
+                <input type="password" id="password" name="password" value="<%= formData ? formData.password : '' %>">
+                <% if (errors && errors.password) { %>
+                    <div class="error" style="color: red;"><%= errors.password %></div>
+                <% } %>
             </div>
             <div class="btncontainer">
                 <button type="submit" class="signupbtn">Login</button>
