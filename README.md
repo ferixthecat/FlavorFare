@@ -7,7 +7,7 @@ Course/Section: WEB322/NEE
 
 ## Project URLs
 GitHub Repo : https://github.com/ferixthecat/web322-ftse7/  
-Cyclic URL : https://<app_name>.cyclic.app/
+Cyclic URL : https://flavorfaredirect.cyclic.app/
 
 # FlavorFare Direct
 A Canadian meal delivery website that creates recipes and delivers ingredients straight to your door, similar to Goodfood.

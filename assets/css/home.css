@@ -5,6 +5,10 @@
     font-family: 'poppins', 'sans-serif';
 }
 
+body {
+    padding-top: 70px;
+}
+
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -12,6 +16,11 @@
     padding: 10px 20px;
     background-color: #8ef1f8; 
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
 }
   
 .nav-left, .nav-right {

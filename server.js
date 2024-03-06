@@ -92,7 +92,7 @@ app.post("/sign-up", (req, res) => {
             .catch((error) => {
                 console.error('Error sending welcome email: ', error);
             });
-        res.render("layouts/welcome", {title: "Welcome"});
+        res.redirect("/welcome");
     }
 })
 
