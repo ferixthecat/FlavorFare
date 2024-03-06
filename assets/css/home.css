@@ -273,16 +273,20 @@ section > h2 {
 .wlcmctn {
     text-align: center;
     margin: auto;
-    width: fit-content;
-    background-color: aqua;
 }
 
 .instructions {
+    margin: 20px 0;
+}
+
+.instructionsheader {
     text-align: center;
+}
+
+.instructctn {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
-    margin: 20px 0;
 }
 
 .instruct {
@@ -298,14 +302,4 @@ section > h2 {
     height: 200px;
     object-fit: cover;
     border-radius: 5px;
-}
-
-.wlcmctn h1, .instructions h1 {
-    color: #333;
-    font-size: 24px;
-}
-
-.instruct h2 {
-    color: #666;
-    font-size: 20px;
 }
