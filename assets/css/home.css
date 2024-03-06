@@ -269,3 +269,13 @@ section > h2 {
         grid-template-columns: 1fr;
     }
 }
+
+.wlcmctn h1, .instructions h1 {
+    color: #333;
+    font-size: 24px;
+}
+
+.instruct h2 {
+    color: #666;
+    font-size: 20px;
+}

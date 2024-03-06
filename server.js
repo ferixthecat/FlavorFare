@@ -14,17 +14,22 @@ const path = require("path");
 const express = require("express");
 const expressLayouts = require('express-ejs-layouts');
 const bodyParser = require("body-parser");
-const app = express();
-require('dotenv').config();
-
 const sgMail = require('@sendgrid/mail');
+
+// Environment configuration
+require('dotenv').config();
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-// Make assets folder public
+// Initialize Express app
+const app = express();
+
+// Static assets configuration
 app.use(express.static(path.join(__dirname, "/assets")));
+
+// Body parser middleware for parsing form data
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Set up EJS
+// EJS setup for templating
 app.set("view engine", "ejs");
 app.set("layout", "layouts/main");
 app.use(expressLayouts);
