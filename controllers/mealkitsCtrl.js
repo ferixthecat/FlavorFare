@@ -39,64 +39,76 @@ router.get("/add", (req, res) => {
     if (req.session.user && req.session.user.role === 'dataentryclerk') {
         res.render("users/add", {title: "Add", errors: [], formData: {}});
     }
-    
+    else {
+        res.status(401).render("general/error", { title: "401", message: "Admin access only" });
+    }
 });
 
 router.post("/add", (req, res) => {
     const { title, includes, description, category, price, cookingTime, servings } = req.body;
     const featuredMealKit = req.body.featuredMealKit ? true : false;
 
-    if (!title || !includes || !description || !category || !price || !cookingTime || !servings || !req.files || !req.files.imageUrl) {
-        return res.render("users/add", {
-            title: "Add",
-            errors: [{ message: "Please fill in all fields and upload an image."}],
-            formData: req.body
-        });
-    }
+    if (req.session.user && req.session.user.role === 'dataentryclerk') {
 
-    const mealPicFile = req.files.imageUrl;
-    const newFileName = `${Date.now()}-${mealPicFile.name}`;
-    const uploadPath = path.join(__dirname, '../assets/images/mealimgs', newFileName);
-
-    mealPicFile.mv(uploadPath, function(err) {
-        if (err) return res.status(500).send(err);
-
-        const newMealKit = new mealkitModel({
-            title,
-            includes,
-            description,
-            category,
-            price,
-            cookingTime,
-            servings,
-            imageUrl: `/images/mealimgs/${newFileName}`,
-            featuredMealKit
-        });
-    
-        newMealKit.save()
-            .then(() => {
-                console.log("Added mealkit");
-                res.redirect("/mealkits/list")
-            })
-            .catch(err => {
-                console.log("Couldn't add meal kit: " + err);
-                res.redirect("/mealkits/add");
+        if (!title || !includes || !description || !category || !price || !cookingTime || !servings || !req.files || !req.files.imageUrl) {
+            return res.render("users/add", {
+                title: "Add",
+                errors: [{ message: "Please fill in all fields and upload an image."}],
+                formData: req.body
             });
-    })
+        }
+
+        const mealPicFile = req.files.imageUrl;
+        const newFileName = `${Date.now()}-${mealPicFile.name}`;
+        const uploadPath = path.join(__dirname, '../assets/images/mealimgs', newFileName);
+
+        mealPicFile.mv(uploadPath, function(err) {
+            if (err) return res.status(500).send(err);
+
+            const newMealKit = new mealkitModel({
+                title,
+                includes,
+                description,
+                category,
+                price,
+                cookingTime,
+                servings,
+                imageUrl: `/images/mealimgs/${newFileName}`,
+                featuredMealKit
+            });
+        
+            newMealKit.save()
+                .then(() => {
+                    console.log("Added mealkit");
+                    res.redirect("/mealkits/list")
+                })
+                .catch(err => {
+                    console.log("Couldn't add meal kit: " + err);
+                    res.redirect("/mealkits/add");
+                });
+        })
+    }
+    else {
+        res.status(401).render("general/error", { title: "401", message: "Admin access only" });
+    }
 });
 
 router.get("/edit/:id", (req, res) => {
-    if (req.session.user && req.session.user.role === 'dataentryclerk')
-    mealkitModel.findById(req.params.id)
-        .then(mealKit => {
-            res.render("users/edit", {
-                title: "Edit Meal Kit",
-                formData: mealKit 
+    if (req.session.user && req.session.user.role === 'dataentryclerk') {
+        mealkitModel.findById(req.params.id)
+            .then(mealKit => {
+                res.render("users/edit", {
+                    title: "Edit Meal Kit",
+                    formData: mealKit 
+                });
+            })
+            .catch(err => {
+                console.error(err);
             });
-        })
-        .catch(err => {
-            console.error(err);
-        });
+    }
+    else {
+        res.status(401).render("general/error", { title: "401", message: "Admin access only" });
+    }
 });
 
 router.post("/edit/:id", (req, res) => {
@@ -105,67 +117,74 @@ router.post("/edit/:id", (req, res) => {
     const cookingTime = parseInt(req.body.cookingTime);
     const servings = parseInt(req.body.servings);
     const featuredMealKit = req.body.featuredMealKit ? true : false;
-    let updatedData = {
-        title,
-        includes,
-        description,
-        category,
-        price,
-        cookingTime,
-        servings,
-        featuredMealKit
-    };
 
-    mealkitModel.findById(req.params.id)
-        .then(mealKit => {
-            if (!mealKit) {
-                return res.status(404).send('Meal kit not found');
-            }
+    if (req.session.user && req.session.user.role === 'dataentryclerk') {
+        let updatedData = {
+            title,
+            includes,
+            description,
+            category,
+            price,
+            cookingTime,
+            servings,
+            featuredMealKit
+        };
 
-            if (req.files && req.files.imageUrl) {
-                const mealPicFile = req.files.imageUrl;
-                const newFileName = `${Date.now()}-${mealPicFile.name}`;
-                const newFilePath = path.join(__dirname, '../assets/images/mealimgs', newFileName);
-    
-                // Delete old file asynchronously if it exists
-                if (mealKit.imageUrl) {
-                    const oldFilePath = path.join(__dirname, mealKit.imageUrl);
-                    fs.unlink(oldFildPath, err => {
-                        if (err) console.log(`Old file not deleted: ${err}`);
-                    });
+        mealkitModel.findById(req.params.id)
+            .then(mealKit => {
+                if (!mealKit) {
+                    return res.status(404).send('Meal kit not found');
                 }
 
-                mealPicFile.mv(newFilePath, err => {
-                    if (err) {
-                        console.error('Failed to upload new image:', err);
-                        return res.status(500).send('Failed to upload new image.');
+                if (req.files && req.files.imageUrl) {
+                    const mealPicFile = req.files.imageUrl;
+                    const newFileName = `${Date.now()}-${mealPicFile.name}`;
+                    const newFilePath = path.join(__dirname, '../assets/images/mealimgs', newFileName);
+        
+                    // Delete old file asynchronously if it exists
+                    if (mealKit.imageUrl) {
+                        const oldFilePath = path.join(__dirname, mealKit.imageUrl);
+                        fs.unlink(oldFildPath, err => {
+                            if (err) console.log(`Old file not deleted: ${err}`);
+                        });
                     }
 
-                    updatedData.imageUrl = `images/mealimgs/${newFileName}`;
+                    mealPicFile.mv(newFilePath, err => {
+                        if (err) {
+                            console.error('Failed to upload new image:', err);
+                            return res.status(500).send('Failed to upload new image.');
+                        }
 
+                        updatedData.imageUrl = `images/mealimgs/${newFileName}`;
+
+                        mealkitModel.findByIdAndUpdate(req.params.id, updatedData)
+                            .then(() => res.redirect("/mealkits/list"))
+                            .catch(err => {
+                                console.error('Error updating meal kit:', err);
+                                res.status(500).send('Server Error');
+                            });
+                    });
+                } else {
                     mealkitModel.findByIdAndUpdate(req.params.id, updatedData)
                         .then(() => res.redirect("/mealkits/list"))
                         .catch(err => {
                             console.error('Error updating meal kit:', err);
                             res.status(500).send('Server Error');
                         });
-                });
-            } else {
-                mealkitModel.findByIdAndUpdate(req.params.id, updatedData)
-                    .then(() => res.redirect("/mealkits/list"))
-                    .catch(err => {
-                        console.error('Error updating meal kit:', err);
-                        res.status(500).send('Server Error');
-                    });
-            }
-        })
-        .catch(err => {
-            console.error('Failed to find meal kit:', err);
-            res.status(500).send('Server Error');
-        });
+                }
+            })
+            .catch(err => {
+                console.error('Failed to find meal kit:', err);
+                res.status(500).send('Server Error');
+            });
+    }
+    else {
+        res.status(401).render("general/error", { title: "401", message: "Admin access only" });
+    }
 });
 
 router.get("/remove/:id", (req, res) => {
+    if (req.session.user && req.session.user.role === 'dataentryclerk') {
     mealkitModel.findById(req.params.id)
        .then(mealKit => {
             res.render("users/remove", {
@@ -176,9 +195,14 @@ router.get("/remove/:id", (req, res) => {
        .catch(err => {
             console.error(err);
        });
+    }
+    else {
+        res.status(401).render("general/error", { title: "401", message: "Admin access only" });
+    }
 });
 
 router.post("/remove/:id", (req, res) => {
+    if (req.session.user && req.session.user.role === 'dataentryclerk') {
     mealkitModel.findById(req.params.id)
         .then(mealKit => {
             const filePath = path.join(__dirname, '../assets', mealKit.imageUrl)
@@ -201,6 +225,10 @@ router.post("/remove/:id", (req, res) => {
         .catch(err => {
             console.error('Failed to find meal kit:', err);
         });
+    }
+    else {
+        res.status(401).render("general/error", { title: "401", message: "Admin access only" });
+    }
 });
 
 module.exports = router;
