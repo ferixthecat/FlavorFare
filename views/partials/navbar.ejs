@@ -2,11 +2,25 @@
     <nav class="navbar">
         <div class="nav-left">
             <a href="/"><img src="/images/flavorlogo.png" alt="logo" class="logo"></a>
-            <a href="/on-the-menu">On the Menu</a>
+            <a href="/mealkits">Meal Kits</a>
         </div>
-        <div class="nav-right">   
-            <a href="/log-in">Log In</a>
-            <a href="/sign-up">Sign Up</a>
+        <div class="nav-right">
+            <% if (!user) { %>
+                <a href="/log-in">Log In</a>
+                <a href="/sign-up">Sign Up</a>
+            <% } else { %>
+                <% if (user.role === 'customer') { %>
+                    <a href="/cart"><%= user.firstName %></a>
+                <% } %>
+                <% if (user.role === 'dataentryclerk') { %>
+                    <a href="/mealkits/list"><%= user.firstName %></a>
+                    <a href="/load-data/mealkits">Load Data</a>
+                    <a href="/mealkits/add">Add</a>
+                <% } %>
+                <a href="/logout">Logout</a>
+            <% } %>
+            <a href="/mealkits/list">Meal Kit List</a>
+            <a href="/cart">Cart</a>
         </div>
     </nav>
 </header>

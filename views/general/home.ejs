@@ -2,7 +2,7 @@
     <div class="hero-txt">
         <h1>Direct Flavor at Home!</h1>
         <p>Discover new flavors weekly directly delivered for home cooking.</p>
-        <a href="/on-the-menu" class="hero-btn">Explore the Menu</a>
+        <a href="/mealkits" class="hero-btn">Explore the Menu</a>
     </div>
 </div>
 <div class="content">
@@ -29,6 +29,6 @@
 </div>
 <div class="ftmeals">
     <% featuredMealKits.forEach(mealkit => { %>
-        <%- include("../partials/mealkit", mealkit) %>
+        <%- include("../partials/mealkit", { mealkit: mealkit }) %>
     <% }); %>
 </div>

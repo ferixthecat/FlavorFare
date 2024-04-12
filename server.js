@@ -13,12 +13,13 @@
 const path = require("path");
 const express = require("express");
 const expressLayouts = require('express-ejs-layouts');
-const bodyParser = require("body-parser");
-const sgMail = require('@sendgrid/mail');
+const dotenv = require("dotenv");
+const mongoose = require("mongoose");
+const session = require("express-session");
+const fileUpload = require("express-fileupload");
 
 // Environment configuration
-require('dotenv').config();
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+dotenv.config({ path: "./config/keys.env" });
 
 // Initialize Express app
 const app = express();
@@ -26,106 +27,39 @@ const app = express();
 // Static assets configuration
 app.use(express.static(path.join(__dirname, "/assets")));
 
-// Body parser middleware for parsing form data
-app.use(bodyParser.urlencoded({ extended: true }));
-
 // EJS setup for templating
 app.set("view engine", "ejs");
 app.set("layout", "layouts/main");
 app.use(expressLayouts);
 
+// Body parser middleware for parsing form data
+app.use(express.urlencoded({ extended: true }));
+
+// Set up express-fileupload
+app.use(fileUpload());
+
 app.set('views', path.join(__dirname, 'views'));
 
-const { getAllMealKits, getFeaturedMealKits, getMealKitsByCategory } = require('./modules/mealkit-util');
+// Set up express-session
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true 
+}));
 
-// Add your routes here
-// e.g. app.get() { ... }
-app.get("/", (req, res) => {
-    const featuredMealKits = getFeaturedMealKits(getAllMealKits());
-    res.render("layouts/home", {
-        title: "Home",
-        featuredMealKits: featuredMealKits 
-    });
-});
-
-app.get("/on-the-menu", (req, res) => {
-    const categories = getMealKitsByCategory(getAllMealKits());
-    res.render("layouts/on-the-menu", {title: "On-the-menu", categories: categories });
-});
-
-app.get("/sign-up", (req, res) => {
-    res.render("layouts/sign-up", {title: "Sign-Up", errors: {}, formData: {}});
-});
-
-app.post("/sign-up", (req, res) => {
-    const { firstName, lastName, email, password } = req.body;
-    let errors = {};
-
-    if (!firstName || firstName.trim() === '') errors.firstName = 'Please enter your first name';
-    if (!lastName || lastName.trim() === '') errors.lastName = 'Please enter your last name';
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || email.trim() === '') {
-        errors.email = 'Please enter your email address';
-    } else if (!emailRegex.test(email)) {
-        errors.email = 'Please enter a valid email address';
-    }
-
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,12}$/;
-    if (!password || password.trim() === '') {
-        errors.password = 'Please enter a password';
-    } else if (!passwordRegex.test(password)) {
-        errors.password = 'Password must be 8-12 characters and include at least one lowercase letter, one number, and one symbol';
-    }
-
-    if (Object.keys(errors).length > 0) {
-        res.render("layouts/sign-up", {title: "Sign-Up", errors, formData: { firstName, lastName, email, password } });
-    } else {
-        const msg = {
-            to: email,
-            from: 'flavorfaredirect@hotmail.com',
-            subject: 'Welcome to FlavorFare Direct',
-            text: `Hello ${firstName} ${lastName}, Welcome to FlavorFare Direct! We're thrilled to have you onboard as a member. - Felix Tse, FlavorFare Direct`,
-            html: `<strong>Hello ${firstName} ${lastName},</strong><br>Welcome to FlavorFare Direct! We're thrilled to have you onboard as a member.<br>- Felix Tse, FlavorFare Direct`,
-        }
-
-        sgMail
-            .send(msg)
-            .then(() => {
-                console.log('Welcome email sent');
-            })
-            .catch((error) => {
-                console.error('Error sending welcome email: ', error);
-            });
-        res.redirect("/welcome");
-    }
+app.use((req, res, next) => {
+    res.locals.user = req.session.user;
+    next();
 })
 
-app.get("/log-in", (req, res) => {
-    res.render("layouts/log-in", {title: "Log-In", errors: {}, formData: {} });
-});
+// Set up controllers
+const generalController = require("./controllers/generalCtrl");
+const mealkitController = require("./controllers/mealkitsCtrl");
+const loaddataController = require("./controllers/loaddataCtrl");
 
-app.post("/log-in", (req, res) => {
-    const { email, password } = req.body;
-    let errors = {};
-
-    if (!email || email.trim() === '') {
-        errors.email = 'Please enter a valid email address';
-    }
-
-    if (!password || password.trim() === '') {
-        errors.password = 'Please enter your password';
-    }
-
-    if (Object.keys(errors).length > 0) {
-        res.render("layouts/log-in", { title: "Log-In", errors, formData: { email, password } });
-    }
-})
-
-app.get("/welcome", (req, res) => {
-    res.render("layouts/welcome", {title: "Welcome"});
-});
-
+app.use("/", generalController);
+app.use("/mealkits/", mealkitController);
+app.use("/load-data/", loaddataController);
 
 // This use() will not allow requests to go beyond it
 // so we place it at the end of the file, after the other routes.
@@ -157,4 +91,11 @@ function onHttpStart() {
   
 // Listen on port 8080. The default port for http is 80, https is 443. We use 8080 here
 // because sometimes port 80 is in use by other applications on the machine
-app.listen(HTTP_PORT, onHttpStart);
+mongoose.connect(process.env.MONGODB_CONNECTION_STRING)
+    .then(() => {
+        console.log("Connected to MongoDB database.");
+        app.listen(HTTP_PORT, onHttpStart);
+    })
+    .catch(err => {
+        console.log("Can't connect to the MongoDB: " + err);
+    });

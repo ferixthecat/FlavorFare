@@ -1,0 +1,47 @@
+<div class="shoppingcart">
+    <% if (message) { %>
+        <div class="alert alert-success">
+            <%= message %>
+        </div>
+    <% } %>
+    <div class="cart-layout">
+        <% if (cartItems && cartItems.length > 0) { %>
+            <div class="cartlist">
+                <h3>Shopping Cart</h3>
+                <% cartItems.forEach(item => { %>
+                    <div class="cart-item">
+                        <img src="<%= item.imageUrl %>" alt="<%= item.title %>" class="cartimg">
+                        <div class="item-dets">
+                            <p><%= item.title %></p>
+                            <p><%= item.includes %></p>
+                            <p>$<%= item.price.toFixed(2) %></p>
+                            <p>Quantity: <%= item.quantity %></p>
+                            <p>Total: $<%= (item.price * item.quantity).toFixed(2) %></p>
+                        </div>
+                        <div class="item-actions">
+                            <form action="/update-cart/<%= item.id %>" method="POST">
+                                <input type="number" name="quantity" value="<%= item.quantity %>" min="1" class="qauntinput" onchange="this.form.submit()">
+                            </form>
+                            <form action="/remove-from-cart/<%= item.id %>" method="POST">
+                                <button type="submit" class="remove-btn">Remove</button>
+                            </form>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+            <div class="sumctn">
+                <h4>Order Summary</h4>
+                <div class="totalctn">
+                    <p><strong>Subtotal:</strong> $<%= subtotal %></p>
+                    <p><strong>Tax (10%):</strong> $<%= tax %></p>
+                    <p><strong>Total:</strong> $<%= grandTotal %></p>
+                </div>
+                <form action="/check-out" method="POST">
+                    <button type="submit">Place Order</button>
+                </form>
+            </div>
+        <% } else { %>
+            <p>Your cart is empty. Find the <a href="/mealkits">meals</a> you like.</p>
+        <% } %>
+    </div>
+</div>

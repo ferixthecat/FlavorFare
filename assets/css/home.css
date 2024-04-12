@@ -211,10 +211,31 @@ h1 {
 }
 
 .supentry {
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
 }
 
-input {
+.supentry:not(.radio-group) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.radio-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+input[type="radio"] {
+    margin: 8px;
+    width: auto;
+}
+
+label {
+    margin: 0;
+}
+
+input:not([type="radio"]) {
     width: calc(100% - 16px); 
     padding: 16px; 
 }
@@ -303,3 +324,244 @@ section > h2 {
     object-fit: cover;
     border-radius: 5px;
 }
+
+.shoppingcart {
+    text-align: center;
+}
+
+.armlist {
+    text-align: center;
+}
+
+.meallistctn {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.indmealkit {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.mealKitImg {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+.mealkitdet {
+    flex-grow: 1;
+}
+
+.mealmods {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.editbtn, .rmvbtn {
+    display: block;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    border-radius: 5px;
+    width: 80px;
+    transition: background-color 0.3s;
+}
+
+.editbtn {
+    background-color: #007bff;
+}
+
+.editbtn:hover {
+    background-color: #0056b3;
+}
+
+.rmvbtn {
+    background-color: #ff5757;
+}
+
+.rmvbtn:hover {
+    background-color: #cc4646;
+}
+
+.addmealkit {
+    max-width: 600px; 
+    margin: 0 auto; 
+    padding: 20px;
+    background-color: #f8f8f8;
+    border-radius: 8px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+.addmealkit h1 {
+    text-align: center;
+    color: #333;
+}
+
+.modentry {
+    margin-bottom: 15px; 
+}
+
+.label {
+    display: block; 
+    margin-bottom: 5px; 
+    font-weight: bold;
+    color: #444;
+}
+
+.input, .modentry textarea, .modentry select {
+    width: 100%; 
+    padding: 8px; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+    box-sizing: border-box; 
+}
+
+#imageUrl {
+    border: none; 
+}
+
+#featured {
+    margin-top: 5px; 
+}
+
+.addbtn {
+    display: block; 
+    width: 100%;
+    padding: 10px; 
+    background-color: #007bff; 
+    color: white; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    font-size: 16px; 
+}
+
+.addbtn:hover {
+    background-color: #0056b3; 
+}
+
+
+.rmvbtn button:hover, a:hover {
+    opacity: 0.9;
+}
+
+.rmvctn {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center; 
+}
+
+.rmvctn h1 {
+    font-size: 1.2rem;
+    color: #333;
+    margin: 0 0 20px 0; 
+}
+
+.rmvctn form {
+    display: inline-block; 
+    text-align: center;
+}
+
+.rmvctn button, .rmvctn a {
+    background-color: #007bff; 
+    color: white;
+    padding: 10px 20px;
+    margin: 5px; 
+    text-decoration: none; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer; 
+    font-size: 16px;
+}
+
+.rmvctn a {
+    background-color: #6c757d; 
+}
+
+.rmvctn button:hover, .rmvctn a:hover {
+    opacity: 0.8;
+}
+
+.loadpage {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.loadpage h2 {
+    font-size: 1.2rem;
+    color: #333;
+    margin: 0 0 20px 0;
+}
+
+.shoppingcart {
+    display: block;
+    max-width: 1200px;
+    margin:auto;
+    padding: 20px;
+}
+
+.cart-layout {
+    display: flex;
+    justify-content: space-between;
+}
+
+.cartlist {
+    flex: 3;
+    padding: 10px;
+}
+
+.sumctn {
+    flex: 1;
+    padding: 10px;
+    border-left: 2px solid #ccc;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.cartimg {
+    width: 100px;
+    height: auto;
+}
+
+.item-dets {
+    flex-grow: 1;
+    padding-left: 10px;
+}
+
+.item-actions {
+    display: flex;
+    flex-direction: column;
+}
+
+.quantinput, .remove-btn {
+    margin-top: 5px;
+}
+
+.alert {
+    padding: 10px;
+    background-color: green;
+    color: white;
+    text-align: center;
+}
+

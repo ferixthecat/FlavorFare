@@ -7,7 +7,7 @@ let mealkits = [
         "price": 23.99,
         "cookingTime": 30,
         "servings": 2,
-        "imageUrl": "/images/medchicken.jpg",
+        "imageUrl": "/images/mealimgs/medchicken.jpg",
         "featuredMealKit": true 
     },
     {
@@ -18,7 +18,7 @@ let mealkits = [
         "price": 21.99,
         "cookingTime": 20,
         "servings": 2,
-        "imageUrl": "/images/pasta.jpg",
+        "imageUrl": "/images/mealimgs/pasta.jpg",
         "featuredMealKit": true 
     },
     {
@@ -29,7 +29,7 @@ let mealkits = [
         "price": 25.99,
         "cookingTime": 60,
         "servings": 2,
-        "imageUrl": "/images/curry.jpg",
+        "imageUrl": "/images/mealimgs/curry.jpg",
         "featuredMealKit": true 
     },
     {
@@ -40,7 +40,7 @@ let mealkits = [
         "price": 23.99,
         "cookingTime": 30,
         "servings": 2,
-        "imageUrl": "/images/sschicken.jpg",
+        "imageUrl": "/images/mealimgs/sschicken.jpg",
         "featuredMealKit": true 
     },
     {
@@ -51,7 +51,7 @@ let mealkits = [
         "price": 14.99,
         "cookingTime": 15,
         "servings": 2,
-        "imageUrl": "/images/benny.jpg",
+        "imageUrl": "/images/mealimgs/benny.jpg",
         "featuredMealKit": false 
     },
     {
@@ -62,7 +62,7 @@ let mealkits = [
         "price": 13.99,
         "cookingTime": 15,
         "servings": 1,
-        "imageUrl": "/images/burrito.jpg",
+        "imageUrl": "/images/mealimgs/burrito.jpg",
         "featuredMealKit": false 
     }
 ];

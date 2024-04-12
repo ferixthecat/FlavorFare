@@ -1,6 +1,13 @@
 <div class="card">
-    <img src="<%= imageUrl %>" alt="<%= title %>">
-    <h3><%= title %></h3>
-    <p><%= description %></p>
-    <p class="price">$<%= price %></p>
+    <img src="<%= mealkit.imageUrl %>" alt="<%= mealkit.title %>">
+    <h3><%= mealkit.title %></h3>
+    <p><%= mealkit.description %></p>
+    <p class="price">$<%= mealkit.price.toFixed(2) %></p>
+    <% if (user) { %>
+        <% if (user.role === 'customer') { %>
+            <form action="/add-to-cart/<%= mealkit._id %>" method="POST">
+                <button type="submit" class="buybtn">Buy</button>
+            </form>
+        <% } %>
+    <% } %>
 </div>

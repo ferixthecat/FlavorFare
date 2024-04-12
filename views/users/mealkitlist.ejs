@@ -1,0 +1,21 @@
+<div class="meallistcontn">
+    <% mealKits.forEach(mealKit => { %>
+        <div class="indmealkit">
+            <img src="<%= mealKit.imageUrl %>" alt="<%= mealKit.title %>" class="mealKitImg">
+            <div class="mealkitdet">
+                <h2><%= mealKit.title %></h2>
+                <p><%= mealKit.description %></p>
+                <p>Includes: <%= mealKit.includes %></p>
+                <p>Category: <%= mealKit.category %></p>
+                <p>Price: $<%= mealKit.price.toFixed(2) %></p>
+                <p>Cooking Time: <%= mealKit.cookingTime %> min</p>
+                <p>Servings: <%= mealKit.servings %></p>
+                <p>Featured: <%= mealKit.featuredMealKit ? 'Yes' : 'No' %></p>
+            </div>           
+            <div class="mealmods">
+                <a href="/mealkits/edit/<%= mealKit._id %>" class="editbtn">Edit</a>
+                <a href="/mealkits/remove/<%= mealKit._id %>" class="rmvbtn">Remove</a>
+            </div>
+        </div>
+    <% }); %>
+</div>

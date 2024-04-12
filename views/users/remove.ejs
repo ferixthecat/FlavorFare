@@ -1,0 +1,7 @@
+<div class="rmvctn">
+    <h1>Are you sure you want to delete the meal kit: "<%= mealKit.title %>"?</h1>
+    <form action="/mealkits/remove/<%= mealKit._id %>" method="POST">
+        <button type="submit">Confirm Delete</button>
+        <a href="/mealkits/list">Cancel</a>
+    </form>
+</div>

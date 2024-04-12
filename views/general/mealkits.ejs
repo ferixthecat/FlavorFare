@@ -3,7 +3,7 @@
         <h2><%= category.categoryName %></h2>
         <div class="meal-kits-grid">
             <% category.mealKits.forEach(mealkit => { %>
-                <%- include('../partials/mealkit', mealkit) %>
+                <%- include('../partials/mealkit', { mealkit: mealkit }) %>
             <% }); %>
         </div>
     </section>

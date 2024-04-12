@@ -1,0 +1,45 @@
+<div class="loginctn">
+    <div class="supcontainer">
+        <h1>Login</h1>
+        <% if (typeof errors !== "undefined" && errors.length > 0) { %>
+            <% errors.forEach(err => { %>
+                <% if (!err.field) { %>
+                    <div class="error" style="color: red;"><%= err.message %></div>
+                <% } %>
+            <% }) %>
+        <% } %>
+        <form method="post" class="incontainer" action="/log-in">
+            <div class="supentry">
+                <label for="email" class="label">Email</label>
+                <input type="text" id="email" name="email" value="<%= formData ? formData.email : '' %>">
+                <% errors.forEach(err => { %>
+                    <% if (err.field === 'email') { %>
+                        <div class="error" style="color: red;"><%= err.message %></div>
+                    <% } %>
+                <% }) %>
+            </div>
+            <div class="supentry">
+                <label for="password" class="label">Password</label>
+                <input type="password" id="password" name="password" value="<%= formData ? formData.password : '' %>">
+                <% errors.forEach(err => { %>
+                    <% if (err.field === 'password') { %>
+                        <div class="error" style="color: red;"><%= err.message %></div>
+                    <% } %>
+                <% }) %>
+            </div>
+            <div class="supentry radio-group">
+                <p>Select your login role:</p>
+                <input type="radio" id="dataclerk" name="role" value="dataentryclerk" checked>
+                <label for="dataclerk">Data Entry Clerk</label>
+                <input type="radio" id="customer" name="role" value="customer">
+                <label for="customer">Customer</label>
+            </div>
+            <div class="btncontainer">
+                <button type="submit" class="signupbtn">Login</button>
+            </div>
+        </form>
+        <div class="signuplink">
+            <p>Don't have an account yet? <a href="/sign-up">Sign up</a></p>
+        </div>
+    </div>
+</div>
