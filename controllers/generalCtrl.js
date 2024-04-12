@@ -155,77 +155,97 @@ router.get("/welcome", (req, res) => {
     res.render("general/welcome", {title: "Welcome"});
 });
 
-router.get("/cart", ensureAuthenticatedAndRole('customer'), (req, res) => {
-    if (!req.session.cart) {
-        req.session.cart = [];
+router.get("/cart", (req, res) => {
+    if (req.session.user && req.session.user.role === 'customer') {
+        if (!req.session.cart) {
+            req.session.cart = [];
+        }
+    
+        // Calculate totals and other necessary cart data
+        let cartItems = req.session.cart;
+        let subtotal = req.session.cart.reduce((total, item) => total + item.price * item.quantity, 0);
+        let tax = subtotal * 0.10; 
+        let grandTotal = subtotal + tax;
+    
+        const message = req.session.message;
+        delete req.session.message;
+    
+        res.render("users/cart", {
+            title: "Shopping Cart",
+            cartItems: cartItems,  // The array of cart items
+            subtotal: subtotal.toFixed(2),  // Formatted subtotal
+            tax: tax.toFixed(2),  // Formatted tax
+            grandTotal: grandTotal.toFixed(2),  // Formatted grand total
+            message: message
+        });
     }
-
-    // Calculate totals and other necessary cart data
-    let cartItems = req.session.cart;
-    let subtotal = req.session.cart.reduce((total, item) => total + item.price * item.quantity, 0);
-    let tax = subtotal * 0.10; 
-    let grandTotal = subtotal + tax;
-
-    const message = req.session.message;
-    delete req.session.message;
-
-    res.render("users/cart", {
-        title: "Shopping Cart",
-        cartItems: cartItems,  // The array of cart items
-        subtotal: subtotal.toFixed(2),  // Formatted subtotal
-        tax: tax.toFixed(2),  // Formatted tax
-        grandTotal: grandTotal.toFixed(2),  // Formatted grand total
-        message: message
-    });
+    else {
+        res.status(401).render("general/error", { title: "401", message: "You must be logged in." });
+    }
 });
 
 router.post("/add-to-cart/:id", (req, res) => {
    const mealkitId = req.params.id;
-   if (!req.session.cart) {
-       req.session.cart = [];
-   }
 
-   mealkitModel.findById(mealkitId)
-       .then(mealkit => {
-            const cartItem = req.session.cart.find(item => item.id === mealkitId);
-            if (cartItem) {
-                cartItem.quantity += 1;
-            }
-            else {
-                req.session.cart.push({
-                    id: mealkit._id,
-                    title: mealkit.title,
-                    includes: mealkit.includes,
-                    imageUrl: mealkit.imageUrl,
-                    price: mealkit.price,
-                    quantity: 1
-                });
-            }
-            req.session.message = 'Meal kit successfully added';
-            res.redirect('/cart');
-       })
-       .catch(err => {
-            console.error('Error adding to cart:', err);
-       });
+   if (req.session.user && req.session.user.role === 'customer') {
+        if (!req.session.cart) {
+            req.session.cart = [];
+        }
+ 
+        mealkitModel.findById(mealkitId)
+            .then(mealkit => {
+                const cartItem = req.session.cart.find(item => item.id === mealkitId);
+                if (cartItem) {
+                    cartItem.quantity += 1;
+                }
+                else {
+                    req.session.cart.push({
+                        id: mealkit._id,
+                        title: mealkit.title,
+                        includes: mealkit.includes,
+                        imageUrl: mealkit.imageUrl,
+                        price: mealkit.price,
+                        quantity: 1
+                    });
+                }
+                req.session.message = 'Meal kit successfully added';
+                res.redirect('/cart');
+            })
+            .catch(err => {
+                console.error('Error adding to cart:', err);
+            });
+    }
+    else {
+        res.status(401).render("general/error", { title: "401", message: "You must be logged in." });
+    }
 });
 
 router.post('/update-cart/:id', (req, res) => {
     const itemId = req.params.id;
     const newQuantity = parseInt(req.body.quantity);
-
-    let cartItem = req.session.cart.find(item => item.id === itemId);
-    if (cartItem) {
-        cartItem.quantity = newQuantity;
+    if (req.session.user && req.session.user.role === 'customer') {
+        let cartItem = req.session.cart.find(item => item.id === itemId);
+        if (cartItem) {
+            cartItem.quantity = newQuantity;
+        }
+    
+        req.session.message = 'Meal kit quantity successfully updated';
+        res.redirect('/cart');
     }
-
-    req.session.message = 'Meal kit quantity successfully updated';
-    res.redirect('/cart');
+    else {
+        res.status(401).render("general/error", { title: "401", message: "You must be logged in." });
+    }
 });
 
 router.post("/remove-from-cart/:id", (req, res) => {
-    req.session.cart = req.session.cart.filter(item => item.id !== req.params.id);
-    req.session.message = 'Meal kit successfully removed.';
-    res.redirect('/cart');
+    if (req.session.user && req.session.user.role === 'customer') {
+        req.session.cart = req.session.cart.filter(item => item.id !== req.params.id);
+        req.session.message = 'Meal kit successfully removed.';
+        res.redirect('/cart');
+    }
+    else {
+        res.status(401).render("general/error", { title: "401", message: "You must be logged in." });
+    }
 });
 
 router.post("/check-out", (req, res) => {
@@ -266,6 +286,9 @@ router.post("/check-out", (req, res) => {
                         res.status(500).send('Error sending email.')
                     });
         }
+    }
+    else {
+        res.status(401).render("general/error", { title: "401", message: "You must be logged in." });
     }
 });
 

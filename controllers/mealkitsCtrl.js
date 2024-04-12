@@ -20,14 +20,19 @@ router.get("/", (req, res) => {
     
 });
 
-router.get("/list", ensureAuthenticatedAndRole('dataentryclerk'), async (req, res) => {
-    MealKit.find({}).sort('title')
-        .then(mealKits => {
-            res.render("users/mealkitlist", {title: "Meal Kits List", mealKits: mealKits});
-        })
-        .catch(err => {
-            res.status(500).render("general/error", {title: "Error", message: "Error occurred while fetching meal kits."});
-        });
+router.get("/list", (req, res) => {
+    if (req.session.user && req.session.user.role === 'dataentryclerk') {
+        MealKit.find({}).sort('title')
+            .then(mealKits => {
+                res.render("users/mealkitlist", {title: "Meal Kits List", mealKits: mealKits});
+            })
+            .catch(err => {
+                res.status(500).render("general/error", {title: "Error", message: "Error occurred while fetching meal kits."});
+            });
+    }
+    else {
+        res.status(401).render("general/error", { title: "401", message: "Admin access only" });
+    }
 });
 
 router.get("/add", (req, res) => {
@@ -78,6 +83,7 @@ router.post("/add", (req, res) => {
 });
 
 router.get("/edit/:id", (req, res) => {
+    if (req.session.user && req.session.user.role === 'dataentryclerk')
     mealkitModel.findById(req.params.id)
         .then(mealKit => {
             res.render("users/edit", {
