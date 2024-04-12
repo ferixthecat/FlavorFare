@@ -36,19 +36,15 @@ router.get("/list", (req, res) => {
 });
 
 router.get("/add", (req, res) => {
-    if (req.session.user && req.session.user.role === 'dataentryclerk') {
+  
         res.render("users/add", {title: "Add", errors: [], formData: {}});
-    }
-    else {
-        res.status(401).render("general/error", { title: "401", message: "Admin access only" });
-    }
+    
 });
 
 router.post("/add", (req, res) => {
     const { title, includes, description, category, price, cookingTime, servings } = req.body;
     const featuredMealKit = req.body.featuredMealKit ? true : false;
 
-    if (req.session.user && req.session.user.role === 'dataentryclerk') {
 
         if (!title || !includes || !description || !category || !price || !cookingTime || !servings || !req.files || !req.files.imageUrl) {
             return res.render("users/add", {
@@ -87,14 +83,11 @@ router.post("/add", (req, res) => {
                     res.redirect("/mealkits/add");
                 });
         })
-    }
-    else {
-        res.status(401).render("general/error", { title: "401", message: "Admin access only" });
-    }
+  
 });
 
 router.get("/edit/:id", (req, res) => {
-    if (req.session.user && req.session.user.role === 'dataentryclerk') {
+   
         mealkitModel.findById(req.params.id)
             .then(mealKit => {
                 res.render("users/edit", {
@@ -105,10 +98,7 @@ router.get("/edit/:id", (req, res) => {
             .catch(err => {
                 console.error(err);
             });
-    }
-    else {
-        res.status(401).render("general/error", { title: "401", message: "Admin access only" });
-    }
+    
 });
 
 router.post("/edit/:id", (req, res) => {
@@ -118,7 +108,7 @@ router.post("/edit/:id", (req, res) => {
     const servings = parseInt(req.body.servings);
     const featuredMealKit = req.body.featuredMealKit ? true : false;
 
-    if (req.session.user && req.session.user.role === 'dataentryclerk') {
+   
         let updatedData = {
             title,
             includes,
@@ -177,14 +167,10 @@ router.post("/edit/:id", (req, res) => {
                 console.error('Failed to find meal kit:', err);
                 res.status(500).send('Server Error');
             });
-    }
-    else {
-        res.status(401).render("general/error", { title: "401", message: "Admin access only" });
-    }
+   
 });
 
 router.get("/remove/:id", (req, res) => {
-    if (req.session.user && req.session.user.role === 'dataentryclerk') {
     mealkitModel.findById(req.params.id)
        .then(mealKit => {
             res.render("users/remove", {
@@ -195,14 +181,10 @@ router.get("/remove/:id", (req, res) => {
        .catch(err => {
             console.error(err);
        });
-    }
-    else {
-        res.status(401).render("general/error", { title: "401", message: "Admin access only" });
-    }
 });
 
 router.post("/remove/:id", (req, res) => {
-    if (req.session.user && req.session.user.role === 'dataentryclerk') {
+  
     mealkitModel.findById(req.params.id)
         .then(mealKit => {
             const filePath = path.join(__dirname, '../assets', mealKit.imageUrl)
@@ -225,10 +207,7 @@ router.post("/remove/:id", (req, res) => {
         .catch(err => {
             console.error('Failed to find meal kit:', err);
         });
-    }
-    else {
-        res.status(401).render("general/error", { title: "401", message: "Admin access only" });
-    }
+  
 });
 
 module.exports = router;
