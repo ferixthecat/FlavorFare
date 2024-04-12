@@ -36,7 +36,10 @@ router.get("/list", (req, res) => {
 });
 
 router.get("/add", (req, res) => {
-    res.render("users/add", {title: "Add", errors: [], formData: {}});
+    if (req.session.user && req.session.user.role === 'dataentryclerk') {
+        res.render("users/add", {title: "Add", errors: [], formData: {}});
+    }
+    
 });
 
 router.post("/add", (req, res) => {
